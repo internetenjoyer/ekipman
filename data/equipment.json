@@ -1,0 +1,48 @@
+[
+  {
+    "id": 1,
+    "name": "Sony A6400 Body (Sarı Çanta)",
+    "checked": false
+  },
+  {
+    "id": 2,
+    "name": "Sony A6400 3 adet batarya",
+    "checked": false
+  },
+  {
+    "id": 3,
+    "name": "Sony 24-70 GMII Lens",
+    "checked": false
+  },
+  {
+    "id": 4,
+    "name": "Sony AX100 Kamera",
+    "checked": false
+  },
+  {
+    "id": 5,
+    "name": "Polarize & ND Mix Filtre",
+    "checked": false
+  },
+  {
+    "id": 6,
+    "name": "DJI Mic",
+    "checked": false
+  },
+  {
+    "id": 7,
+    "name": "DJI Air 3 Drone",
+    "checked": false
+  },
+  {
+    "id": 9,
+    "name": "Hava Pompası",
+    "checked": false
+  },
+  {
+    "id": 8,
+    "name": "SD Kartlıkları (Görüntü aktarımı)",
+    "transferChecked": false,
+    "checked": false
+  }
+]

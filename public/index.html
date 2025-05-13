@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Ekipman Takip</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎬</text></svg>">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head>
+<body>
+  <div class="container">
+    <div class="title-container">
+      <div class="title-wrapper">
+        <h1 id="main-title" class="editable-title" contenteditable="true" data-placeholder="Başlık Girin"></h1>
+        <button id="clear-title" class="clear-title-btn" aria-label="Başlığı temizle">&times;</button>
+      </div>
+      <div class="char-counter"><span id="title-char-count">0</span>/150</div>
+    </div>
+    
+    <div class="equipment-list" id="equipment-list">
+      <!-- JavaScript ile doldurulacak -->
+    </div>
+    
+    <div class="actions">
+      <button id="email-btn" class="email-btn">E-posta Gönder</button>
+      <button id="reset-btn" class="reset-btn">Tümünü Sıfırla</button>
+    </div>
+  </div>
+  
+  <!-- Bildirim Popup -->
+  <div id="notification" class="notification">
+    <div class="notification-content">
+      <span id="notification-message"></span>
+      <button id="notification-close" class="notification-close">&times;</button>
+    </div>
+  </div>
+  
+  <!-- Onay Popup -->
+  <div id="confirm-dialog" class="dialog">
+    <div class="dialog-content">
+      <h3 class="dialog-title">Onay</h3>
+      <p id="confirm-message">Tüm ekipmanları ve başlığı sıfırlamak istediğinizden emin misiniz?</p>
+      <div class="dialog-actions">
+        <button id="confirm-cancel" class="dialog-btn cancel-btn">İptal</button>
+        <button id="confirm-ok" class="dialog-btn ok-btn">Tamam</button>
+      </div>
+    </div>
+  </div>
+  
+  <script src="script.js"></script>
+</body>
+</html> 

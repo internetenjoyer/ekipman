@@ -1,0 +1,638 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+  --safe-area-inset-top: env(safe-area-inset-top, 0px);
+  --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-area-inset-left: env(safe-area-inset-left, 0px);
+  --safe-area-inset-right: env(safe-area-inset-right, 0px);
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  background-color: #f0f2f5;
+  overscroll-behavior-y: none;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  padding-top: calc(20px + var(--safe-area-inset-top));
+  padding-bottom: calc(20px + var(--safe-area-inset-bottom));
+  padding-left: calc(var(--safe-area-inset-left));
+  padding-right: calc(var(--safe-area-inset-right));
+  min-height: 100%;
+}
+
+.container {
+  width: 100%;
+  max-width: 640px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  margin: 20px;
+  margin-top: 0;
+  max-height: calc(100vh - 40px - var(--safe-area-inset-top) - var(--safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+}
+
+.title-container {
+  text-align: center;
+  margin-bottom: 12px;
+  max-width: 100%;
+  flex-shrink: 0;
+}
+
+.title-wrapper {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+}
+
+h1 {
+  color: #222;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+  min-height: 32px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+  white-space: pre-wrap; /* Alt satıra geçiş için */
+  line-height: 1.2;
+}
+
+/* Başlık zorunlu animasyonu */
+@keyframes title-required-animation {
+  0% { border-bottom-color: transparent; }
+  20% { border-bottom-color: #f44336; }
+  40% { border-bottom-color: transparent; }
+  60% { border-bottom-color: #f44336; }
+  80% { border-bottom-color: transparent; }
+  100% { border-bottom-color: #f44336; }
+}
+
+.editable-title {
+  display: inline-block;
+  border-bottom: 2px dashed transparent;
+  transition: border-color 0.2s ease;
+  padding: 0 4px;
+  outline: none;
+  max-width: 100%;
+  padding-right: 36px; /* Temizleme butonu için alan */
+}
+
+.editable-title:hover {
+  border-bottom-color: rgba(0, 0, 0, 0.1);
+}
+
+.editable-title:focus {
+  border-bottom-color: #1a73e8;
+}
+
+.editable-title:empty:before {
+  content: attr(data-placeholder);
+  color: #bbb;
+  font-style: italic;
+  font-weight: 400;
+}
+
+.editable-title[data-empty="true"]:before {
+  content: attr(data-placeholder);
+  color: #bbb;
+  font-style: italic;
+  font-weight: 400;
+}
+
+.clear-title-btn {
+  position: absolute;
+  right: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #aaa;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+  visibility: hidden;
+}
+
+.clear-title-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: #666;
+}
+
+.editable-title:not([data-empty="true"]) + .clear-title-btn {
+  opacity: 0;
+  visibility: visible;
+}
+
+.title-wrapper:hover .clear-title-btn,
+.editable-title:focus + .clear-title-btn {
+  opacity: 1;
+}
+
+.equipment-list {
+  margin-bottom: 16px;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+}
+
+.equipment-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  transition: background-color 0.15s ease;
+}
+
+.equipment-item:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.equipment-item:last-child {
+  border-bottom: none;
+}
+
+.clickable-row {
+  cursor: pointer;
+  user-select: none;
+}
+
+.equipment-item label {
+  margin-left: 0;
+  flex-grow: 1;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 2px 0;
+}
+
+.checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  margin-right: 10px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  touch-action: manipulation;
+}
+
+.checkbox:checked {
+  background-color: #1a73e8;
+  border-color: #1a73e8;
+}
+
+.checkbox:checked::after {
+  content: '';
+  position: absolute;
+  border-style: solid;
+  border-color: white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  width: 4px;
+  height: 9px;
+  margin-left: 0.5px;
+  margin-top: -1px;
+}
+
+.sd-card-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: rgba(26, 115, 232, 0.04);
+  border-radius: 8px;
+  padding: 10px;
+  margin: 4px 0;
+  border: 1px solid rgba(26, 115, 232, 0.1);
+}
+
+.sd-card-title {
+  width: 100%;
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: #1a73e8;
+  font-weight: 600;
+}
+
+.sd-card-item .checkbox-wrapper {
+  margin-left: 0;
+  padding: 4px 0;
+  width: 100%;
+}
+
+.sd-card-item .checkbox-group {
+  display: flex;
+  align-items: center;
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px dashed rgba(0, 0, 0, 0.08);
+  width: 100%;
+}
+
+.sd-card-item .checkbox-group label {
+  margin-left: 0;
+  font-size: 13px;
+  color: #5f6368;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  gap: 12px;
+  flex-direction: row;
+  flex-shrink: 0;
+}
+
+.reset-btn, .email-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  min-width: 120px;
+  flex: 1;
+}
+
+.reset-btn {
+  background-color: #ea4335;
+  color: white;
+  box-shadow: 0 2px 6px rgba(234, 67, 53, 0.2);
+}
+
+.reset-btn:hover {
+  background-color: #d33426;
+}
+
+.reset-btn:active {
+  transform: scale(0.98);
+}
+
+.email-btn {
+  background-color: #1a73e8;
+  color: white;
+  box-shadow: 0 2px 6px rgba(26, 115, 232, 0.2);
+}
+
+.email-btn:hover {
+  background-color: #1967d2;
+}
+
+.email-btn:active {
+  transform: scale(0.98);
+}
+
+.email-btn:disabled, .reset-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Bildirim Popup Stili */
+.notification {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 0 16px;
+  padding-bottom: calc(16px + var(--safe-area-inset-bottom));
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+
+.notification.show {
+  display: block;
+  transform: translateY(0);
+}
+
+.notification-content {
+  background-color: #323232;
+  color: white;
+  padding: 16px 24px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 600px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.notification-message {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.notification-close {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0 0 0 16px;
+  opacity: 0.7;
+}
+
+.notification-close:hover {
+  opacity: 1;
+}
+
+.notification.success .notification-content {
+  background-color: #0f9d58;
+}
+
+.notification.error .notification-content {
+  background-color: #ea4335;
+}
+
+/* Bildirim Zamanlayıcı */
+.notification-content::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.3);
+  transform-origin: left;
+  transform: scaleX(0);
+}
+
+.notification.show .notification-content::before {
+  animation: notification-timer 2s linear forwards;
+}
+
+@keyframes notification-timer {
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+/* Dialog Stili */
+.dialog {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.5);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.dialog.show {
+  display: flex;
+}
+
+.dialog-content {
+  background-color: white;
+  border-radius: 12px;
+  padding: 24px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.dialog-title {
+  font-size: 18px;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.dialog-btn {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.cancel-btn {
+  background-color: #f1f3f4;
+  color: #5f6368;
+}
+
+.cancel-btn:hover {
+  background-color: #e8eaed;
+}
+
+.ok-btn {
+  background-color: #1a73e8;
+  color: white;
+}
+
+.ok-btn:hover {
+  background-color: #1967d2;
+}
+
+.char-counter {
+  font-size: 11px;
+  color: #999;
+  margin-top: 4px;
+  transition: color 0.2s ease;
+}
+
+.char-counter.limit-near {
+  color: #ff9800;
+}
+
+.char-counter.limit-reached {
+  color: #f44336;
+}
+
+/* Dokunma efektleri */
+@keyframes button-press {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.97); }
+  100% { transform: scale(1); }
+}
+
+@keyframes checkbox-press {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(0.9); opacity: 0.8; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.reset-btn:active, .email-btn:active {
+  animation: button-press 0.3s ease;
+}
+
+.checkbox:active {
+  animation: checkbox-press 0.3s ease;
+}
+
+/* Dokunmatik cihaz özellikleri */
+.touch-device .clickable-row {
+  cursor: default;
+}
+
+.touch-device .checkbox {
+  width: 22px;
+  height: 22px;
+}
+
+.touch-device .checkbox-wrapper {
+  padding: 6px 0;
+}
+
+.touch-device .equipment-item {
+  padding: 14px 10px;
+}
+
+.touch-device .equipment-item:active {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.touch-device .reset-btn, 
+.touch-device .email-btn {
+  padding: 14px;
+  min-height: 48px;
+}
+
+/* Mobil Uyumlu Düzenlemeler */
+@media (max-width: 600px) {
+  body {
+    align-items: flex-start;
+  }
+  
+  .container {
+    padding: 16px;
+    margin: 12px;
+    border-radius: 16px;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  
+  .equipment-item {
+    padding: 10px 8px;
+  }
+  
+  h1 {
+    font-size: 22px;
+    margin-bottom: 12px;
+  }
+  
+  .actions {
+    flex-direction: row;
+    gap: 10px;
+  }
+  
+  .reset-btn, .email-btn {
+    width: auto;
+    padding: 12px;
+    font-size: 15px;
+    touch-action: manipulation;
+    min-height: 44px;
+  }
+  
+  .checkbox {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .checkbox:checked::after {
+    width: 6px;
+    height: 12px;
+  }
+  
+  .equipment-item label {
+    font-size: 14px;
+    padding: 4px 0;
+  }
+  
+  .sd-card-item {
+    padding: 14px;
+  }
+  
+  /* Mobil cihazlarda tıklanabilir alanları büyüt */
+  .clickable-row {
+    min-height: 48px;
+  }
+  
+  /* Dokunma alanını genişlet */
+  .checkbox-wrapper {
+    padding: 8px 0;
+  }
+  
+  /* Bildirim stilini mobil için ayarla */
+  .notification-content {
+    padding: 16px;
+    border-radius: 12px;
+  }
+  
+  /* Dialog stilini mobil için ayarla */
+  .dialog-content {
+    padding: 20px;
+  }
+}
+
+.title-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 6px;
+  text-align: center;
+}
+
+.required-mark {
+  color: #f44336;
+  font-weight: bold;
+  margin-left: 2px;
+} 
