@@ -1,10 +1,8 @@
-const basePath = '/ekipman';
 const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
 const nodemailer = require('nodemailer');
-
 
 const app = express();
 const PORT = process.env.PORT || 3010;
@@ -14,7 +12,7 @@ const RECIPIENT_EMAIL = 'selim@vibemedya.com';
 
 // Middleware
 app.use(bodyParser.json());
-app.use(basePath, express.static(path.join(__dirname, 'public')));
+app.use(express.static('public'));
 
 // E-posta göndermek için transporter oluştur
 const transporter = nodemailer.createTransport({
@@ -92,7 +90,7 @@ try {
 }
 
 // Tüm ekipmanları getir
-app.get('${basePath}//ekipman/api/equipment', (req, res) => {
+app.get('/api/equipment', (req, res) => {
   res.json(equipmentData);
 });
 
@@ -114,7 +112,7 @@ app.post('/api/config', (req, res) => {
 });
 
 // Ekipman durumunu güncelle
-app.post('//ekipman/api/equipment/:id', (req, res) => {
+app.post('/api/equipment/:id', (req, res) => {
   const { id } = req.params;
   const { checked, transferChecked } = req.body;
   
@@ -279,10 +277,9 @@ app.post('/api/send-email', async (req, res) => {
 });
 
 // Ana sayfayı gönder
-app.get(basePath, (req, res) => {
+app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
-
 
 // Server'ı başlat
 app.listen(PORT, () => {
