@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   // DOM elemanlarını seç
   const BASE_PATH = '/ekipman';
+  const API_PATH = '/ekipman/api'; // API istekleri için yol
   const equipmentList = document.getElementById('equipment-list');
   const resetBtn = document.getElementById('reset-btn');
   const mainTitle = document.getElementById('main-title');
@@ -134,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // Dokunsal geri bildirim - işlem başladı
       vibrateDevice(60);
       
-      const response = await fetch(`${BASE_PATH}/api/send-email`, {
+      const response = await fetch(`${API_PATH}/send-email`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -217,7 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const title = mainTitle.textContent.trim();
     
     try {
-      await fetch(`${BASE_PATH}/api/config`, {
+      await fetch(`${API_PATH}/config`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -233,7 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Ayarları getir
   async function fetchConfig() {
     try {
-      const response = await fetch(`${BASE_PATH}/api/config`);
+      const response = await fetch(`${API_PATH}/config`);
       const data = await response.json();
       
       if (data.title) {
@@ -261,7 +262,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Ekipman listesini getir
   async function fetchEquipment() {
     try {
-      const response = await fetch(`${BASE_PATH}/api/equipment`);
+      const response = await fetch(`${API_PATH}/equipment`);
       const data = await response.json();
       
       renderEquipmentList(data);
@@ -391,7 +392,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const updateData = {};
       updateData[checkType] = isChecked;
       
-      const response = await fetch(`${BASE_PATH}/api/equipment/${itemId}`, {
+      const response = await fetch(`${API_PATH}/equipment/${itemId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -417,7 +418,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // Dokunsal geri bildirim - işlem başladı
       vibrateDevice(60);
       
-      const response = await fetch(`${BASE_PATH}/api/reset`, {
+      const response = await fetch(`${API_PATH}/reset`, {
         method: 'POST'
       });
       
