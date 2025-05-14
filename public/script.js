@@ -134,12 +134,14 @@ document.addEventListener('DOMContentLoaded', () => {
       // Dokunsal geri bildirim - işlem başladı
       vibrateDevice(60);
       
-      const response = await fetch(`${BASE_PATH}/api/send-email', {
+      const response = await fetch(`${BASE_PATH}/api/send-email`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({})
+        body: JSON.stringify({
+          emailTitle: titleText
+        })
       });
       
       // Yanıt kontrolü
@@ -217,7 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const title = mainTitle.textContent.trim();
     
     try {
-      await fetch(`${BASE_PATH}/api/config', {
+      await fetch(`${BASE_PATH}/api/config`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -417,7 +419,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // Dokunsal geri bildirim - işlem başladı
       vibrateDevice(60);
       
-      const response = await fetch(`${BASE_PATH}/api/reset', {
+      const response = await fetch(`${BASE_PATH}/api/reset`, {
         method: 'POST'
       });
       
