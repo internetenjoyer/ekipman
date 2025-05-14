@@ -12,7 +12,7 @@ const RECIPIENT_EMAIL = 'selim@vibemedya.com';
 
 // Middleware
 app.use(bodyParser.json());
-app.use(express.static('public'));
+app.use('/ekipman', express.static('public'));
 
 // E-posta göndermek için transporter oluştur
 const transporter = nodemailer.createTransport({
