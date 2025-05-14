@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
   // DOM elemanlarını seç
-  const BASE_PATH = '/ekipman';
   const API_PATH = '/ekipman/api'; // API istekleri için yol
   const equipmentList = document.getElementById('equipment-list');
   const resetBtn = document.getElementById('reset-btn');
