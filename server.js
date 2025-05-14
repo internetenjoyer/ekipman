@@ -13,7 +13,8 @@ const RECIPIENT_EMAIL = 'selim@vibemedya.com';
 
 // Middleware
 app.use(bodyParser.json());
-app.use(BASE_PATH, express.static('public'));
+app.use(express.static('public')); // Kök dizinde statik dosyalara erişim
+app.use(BASE_PATH, express.static('public')); // Ekipman yolunda da statik dosyalara erişim
 
 // E-posta göndermek için transporter oluştur
 const transporter = nodemailer.createTransport({
@@ -90,6 +91,7 @@ try {
   configData = JSON.parse(JSON.stringify(defaultConfig));
 }
 
+// API endpoint'leri
 // Tüm ekipmanları getir
 app.get(`${BASE_PATH}/api/equipment`, (req, res) => {
   res.json(equipmentData);
@@ -280,11 +282,6 @@ app.post(`${BASE_PATH}/api/send-email`, async (req, res) => {
 // Ana sayfayı gönder
 app.get(`${BASE_PATH}`, (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-// Kök yolu ekipman sayfasına yönlendir
-app.get('/', (req, res) => {
-  res.redirect(BASE_PATH);
 });
 
 // Server'ı başlat
