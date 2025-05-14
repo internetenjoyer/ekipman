@@ -6,16 +6,13 @@ const nodemailer = require('nodemailer');
 
 const app = express();
 const PORT = process.env.PORT || 3010;
-const BASE_PATH = '/ekipman';
 
 // Sabit e-posta adresi
 const RECIPIENT_EMAIL = 'selim@vibemedya.com';
 
 // Middleware
 app.use(bodyParser.json());
-
-// Statik dosyaları sunma - tüm yolları düzgün yapılandır
-app.use(BASE_PATH, express.static(path.join(__dirname, 'public')));
+app.use(express.static('public'));
 
 // E-posta göndermek için transporter oluştur
 const transporter = nodemailer.createTransport({
@@ -92,19 +89,18 @@ try {
   configData = JSON.parse(JSON.stringify(defaultConfig));
 }
 
-// API endpoint'leri
 // Tüm ekipmanları getir
-app.get(`/ekipman/api/equipment`, (req, res) => {
+app.get('/api/equipment', (req, res) => {
   res.json(equipmentData);
 });
 
 // Ayarları getir
-app.get(`/ekipman/api/config`, (req, res) => {
+app.get('/api/config', (req, res) => {
   res.json(configData);
 });
 
 // Ayarları güncelle
-app.post(`/ekipman/api/config`, (req, res) => {
+app.post('/api/config', (req, res) => {
   const { title } = req.body;
   
   if (title !== undefined) {
@@ -116,7 +112,7 @@ app.post(`/ekipman/api/config`, (req, res) => {
 });
 
 // Ekipman durumunu güncelle
-app.post(`/ekipman/api/equipment/:id`, (req, res) => {
+app.post('/api/equipment/:id', (req, res) => {
   const { id } = req.params;
   const { checked, transferChecked } = req.body;
   
@@ -140,7 +136,7 @@ app.post(`/ekipman/api/equipment/:id`, (req, res) => {
 });
 
 // Tüm verileri sıfırla
-app.post(`/ekipman/api/reset`, (req, res) => {
+app.post('/api/reset', (req, res) => {
   // Derin kopyalama ile yeni instance'lar oluştur
   equipmentData = JSON.parse(JSON.stringify(defaultEquipment));
   configData = JSON.parse(JSON.stringify(defaultConfig));
@@ -153,7 +149,7 @@ app.post(`/ekipman/api/reset`, (req, res) => {
 });
 
 // E-posta gönderme endpoint'i
-app.post(`/ekipman/api/send-email`, async (req, res) => {
+app.post('/api/send-email', async (req, res) => {
   const { subject } = req.body;
   
   try {
@@ -281,12 +277,11 @@ app.post(`/ekipman/api/send-email`, async (req, res) => {
 });
 
 // Ana sayfayı gönder
-app.get(`/ekipman`, (req, res) => {
+app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // Server'ı başlat
 app.listen(PORT, () => {
   console.log(`Server ${PORT} portunda çalışıyor`);
-  console.log(`Uygulama şu adreste çalışıyor: http://localhost:${PORT}/ekipman`);
 }); 
