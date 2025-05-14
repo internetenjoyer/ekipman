@@ -6,13 +6,14 @@ const nodemailer = require('nodemailer');
 
 const app = express();
 const PORT = process.env.PORT || 3010;
+const BASE_PATH = '/ekipman';
 
 // Sabit e-posta adresi
 const RECIPIENT_EMAIL = 'selim@vibemedya.com';
 
 // Middleware
 app.use(bodyParser.json());
-app.use('/ekipman', express.static('public'));
+app.use(BASE_PATH, express.static('public'));
 
 // E-posta göndermek için transporter oluştur
 const transporter = nodemailer.createTransport({
@@ -90,17 +91,17 @@ try {
 }
 
 // Tüm ekipmanları getir
-app.get('/api/equipment', (req, res) => {
+app.get(`${BASE_PATH}/api/equipment`, (req, res) => {
   res.json(equipmentData);
 });
 
 // Ayarları getir
-app.get('/api/config', (req, res) => {
+app.get(`${BASE_PATH}/api/config`, (req, res) => {
   res.json(configData);
 });
 
 // Ayarları güncelle
-app.post('/api/config', (req, res) => {
+app.post(`${BASE_PATH}/api/config`, (req, res) => {
   const { title } = req.body;
   
   if (title !== undefined) {
@@ -112,7 +113,7 @@ app.post('/api/config', (req, res) => {
 });
 
 // Ekipman durumunu güncelle
-app.post('/api/equipment/:id', (req, res) => {
+app.post(`${BASE_PATH}/api/equipment/:id`, (req, res) => {
   const { id } = req.params;
   const { checked, transferChecked } = req.body;
   
@@ -136,7 +137,7 @@ app.post('/api/equipment/:id', (req, res) => {
 });
 
 // Tüm verileri sıfırla
-app.post('/api/reset', (req, res) => {
+app.post(`${BASE_PATH}/api/reset`, (req, res) => {
   // Derin kopyalama ile yeni instance'lar oluştur
   equipmentData = JSON.parse(JSON.stringify(defaultEquipment));
   configData = JSON.parse(JSON.stringify(defaultConfig));
@@ -149,7 +150,7 @@ app.post('/api/reset', (req, res) => {
 });
 
 // E-posta gönderme endpoint'i
-app.post('/api/send-email', async (req, res) => {
+app.post(`${BASE_PATH}/api/send-email`, async (req, res) => {
   const { subject } = req.body;
   
   try {
@@ -277,11 +278,17 @@ app.post('/api/send-email', async (req, res) => {
 });
 
 // Ana sayfayı gönder
-app.get('/', (req, res) => {
+app.get(`${BASE_PATH}`, (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// Kök yolu ekipman sayfasına yönlendir
+app.get('/', (req, res) => {
+  res.redirect(BASE_PATH);
 });
 
 // Server'ı başlat
 app.listen(PORT, () => {
   console.log(`Server ${PORT} portunda çalışıyor`);
+  console.log(`Uygulama şu adreste çalışıyor: http://localhost:${PORT}${BASE_PATH}`);
 }); 
